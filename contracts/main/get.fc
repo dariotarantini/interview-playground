@@ -1,0 +1,5 @@
+;; define off-chain get methods here
+int get_value() method_id {
+    storage::load();
+    return storage::value;
+}

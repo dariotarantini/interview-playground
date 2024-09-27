@@ -1,0 +1,5 @@
+;; import all file for a contract
+
+#include "storage.fc";
+#include "msgs/any.fc";     ;; keep all message-related handlers in "msgs/" folder
+#include "get.fc";

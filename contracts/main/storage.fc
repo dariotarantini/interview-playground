@@ -1,0 +1,14 @@
+;; storage functions
+global int storage::value;
+
+() storage::load() impure inline {
+    var ds = get_data().begin_parse();
+    storage::value = ds~load_uint32();
+    ds.end_parse();
+}
+
+() storage::save() impure inline {
+    set_data(begin_cell()
+        .store_uint32(storage::value)
+    .end_cell());
+}

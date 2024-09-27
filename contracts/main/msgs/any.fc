@@ -1,0 +1,28 @@
+(int) handle_any_messages() impure inline {
+    slice in_msg_body = ctx.at(BODY);
+
+    if ctx.at(OPCODE) == op::click {
+        ;; read data from incoming payload
+        int incoming_value = in_msg_body~load_uint32();
+
+        ;; check if value is less or equal than allowed
+        throw_unless(error::value_too_big, incoming_value <= params::max_value);
+
+        ;; set new value on storage 
+        storage::value = incoming_value;
+
+        ;; save new storage state if it was changed
+        storage::save();    
+
+        ;; reserves at least storage_fee::main TON on balance of this contract
+        ;; if the balance is > storage_fee::main then reserve old balance
+        ;; thus me keep contract balance unchanged or with at least storage_fee::main TON
+        reserves::max_balance(storage_fee::main); 
+
+        ;; send msgs with ton excesses back to sender
+        utils::send_excesses(0, ctx.at(SENDER), QCARRY_ALL_BALANCE);
+        return (true);
+    }
+
+    return (false);
+}

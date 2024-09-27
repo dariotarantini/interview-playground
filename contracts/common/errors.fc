@@ -1,0 +1,5 @@
+const error::wrong_workchain = 99;
+const error::insufficient_gas = 100;
+const error::value_too_big = 101;
+
+const error::wrong_op = 0xFFFF;

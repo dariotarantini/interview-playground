@@ -1,0 +1,2 @@
+const op::click = "click"c;
+const op::garbage = "garbage"c;

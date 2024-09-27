@@ -1,0 +1,31 @@
+#pragma version >=0.4.0;
+
+#include "common/imports.fc";
+#include "main/imports.fc";	;; replace "main" with an actual folder
+
+;; this is the entry point of the contract, handles all internal contract-to-contract messages
+() recv_internal(int my_balance, int msg_value, cell in_msg_full, slice in_msg_body) impure {
+    if in_msg_body.slice_empty?() { return (); }  ;; don't do anything if incoming msg is empty
+
+    ctx::init(my_balance, msg_value, in_msg_full, in_msg_body); ;; initialize context
+
+    ;; handle bounce messages here
+    if ctx.at(IS_BOUNCED) { 
+        return ();
+    }
+
+    ;; check address workchain - we work only in workchain with id = 0
+    ;; the other possible id is -1 that means it's a masterchain address
+    throw_unless(error::wrong_workchain, ctx.at(SENDER).address::check_workchain(params::workchain));
+    
+    ;; load contract storage
+    storage::load();
+
+    ;; do processing based on op code
+    if handle_any_messages() {
+        return ();
+    }
+
+    ;; throw an error if incoming op code wasn't handled by our contract
+    throw(error::wrong_op);
+}

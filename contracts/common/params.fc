@@ -1,0 +1,3 @@
+const params::workchain = 0;
+
+const params::max_value = 10000;

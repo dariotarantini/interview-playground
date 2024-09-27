@@ -1,0 +1,5 @@
+#include "../../node_modules/@ston-fi/funcbox/autoload.fc"; ;; loads functions from @ston-fi/funcbox
+#include "errors.fc";	;; keep error codes here
+#include "op.fc";		;; keep operation codes here
+#include "gas.fc";		;; keep gas constants here
+#include "params.fc";	;; keep const parameters here
